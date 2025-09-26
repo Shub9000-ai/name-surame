@@ -1,0 +1,54 @@
+section .data
+    msg db "Result: %d", 10, 0   ; format string for printf
+
+section .bss
+    result resd 1                ; space for result
+
+section .text
+    global main
+    extern printf
+
+main:
+    ; ---------------- Addition ----------------
+    mov eax, 10      ; first number
+    mov ebx, 5       ; second number
+    add eax, ebx     ; eax = eax + ebx
+    mov [result], eax
+    push eax
+    push msg
+    call printf
+    add esp, 8       ; clean stack
+
+    ; ---------------- Subtraction ----------------
+    mov eax, 10
+    mov ebx, 5
+    sub eax, ebx
+    mov [result], eax
+    push eax
+    push msg
+    call printf
+    add esp, 8
+
+    ; 
+    mov eax, 10
+    mov ebx, 5
+    imul ebx         ; eax = eax * ebx
+    mov [result], eax
+    push eax
+    push msg
+    call printf
+    add esp, 8
+
+    ;
+    mov eax, 10
+    cdq              ; sign extend into EDX
+    mov ebx, 5
+    idiv ebx         ; eax = eax / ebx
+    mov [result], eax
+    push eax
+    push msg
+    call printf
+    add esp, 8
+
+    mov eax, 0       ; return 0
+    ret
