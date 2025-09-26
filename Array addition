@@ -1,0 +1,32 @@
+section .data
+    arr db 2, 3, 4, 0   ; array of numbers (last 0 marks end)
+    msg db "Sum: %d",10,0
+
+section .bss
+    sum resd 1
+
+section .text
+    global main
+    extern printf
+
+main:
+    xor eax, eax        ; sum = 0
+    mov esi, arr        ; point to array
+
+next:
+    mov bl, [esi]       ; get element
+    cmp bl, 0           ; end?
+    je done
+    add al, bl          ; sum += element
+    inc esi
+    jmp next
+
+done:
+    mov [sum], eax
+    push eax
+    push msg
+    call printf
+    add esp, 8
+
+    mov eax, 0
+    ret
