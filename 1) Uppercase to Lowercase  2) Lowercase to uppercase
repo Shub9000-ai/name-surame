@@ -1,0 +1,108 @@
+section .data
+    msg1 db "Enter an UPPERCASE letter: ", 0
+    msg1len equ $-msg1
+
+    msg2 db "Enter a lowercase letter: ", 0
+    msg2len equ $-msg2
+
+    out1 db "Lowercase: ", 0
+    out1len equ $-out1
+
+    out2 db "Uppercase: ", 0
+    out2len equ $-out2
+
+    newline db 0xA, 0
+
+section .bss
+    ch1 resb 1
+    ch2 resb 1
+
+section .text
+    global _start
+
+_start:
+
+    
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, msg1
+    mov edx, msg1len
+    int 0x80
+
+    ; read character
+    mov eax, 3
+    mov ebx, 0
+    mov ecx, ch1
+    mov edx, 1
+    int 0x80
+
+    ; convert to lowercase (add 32)
+    mov al, [ch1]
+    add al, 32
+    mov [ch1], al
+
+    ; print result message
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, out1
+    mov edx, out1len
+    int 0x80
+
+    ; print converted char
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, ch1
+    mov edx, 1
+    int 0x80
+
+    ; newline
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, newline
+    mov edx, 1
+    int 0x80
+
+    
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, msg2
+    mov edx, msg2len
+    int 0x80
+
+    ; read character
+    mov eax, 3
+    mov ebx, 0
+    mov ecx, ch2
+    mov edx, 1
+    int 0x80
+
+    ; convert to uppercase (subtract 32)
+    mov al, [ch2]
+    sub al, 32
+    mov [ch2], al
+
+    ; print result message
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, out2
+    mov edx, out2len
+    int 0x80
+
+    ; print converted char
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, ch2
+    mov edx, 1
+    int 0x80
+
+    ; newline
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, newline
+    mov edx, 1
+    int 0x80
+
+    ; exit
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
